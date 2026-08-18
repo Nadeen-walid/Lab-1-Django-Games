@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Guessing Game</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f2f2f2;
+        }
+
+        .game-box {
+            background-color: white;
+            width: 400px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game-box">
+
+        <h1>🎮 Number Guessing Game</h1>
+
+        <p>Guess a number between 1 and 10</p>
+
+        <input type="number" id="guess" min="1" max="10">
+
+        <button onclick="checkGuess()">Guess</button>
+
+        <p id="result"></p>
+
+    </div>
+
+
+    <script>
+
+        // الكمبيوتر يختار رقم عشوائي من 1 إلى 10
+        let computerNumber = Math.floor(Math.random() * 10) + 1;
+
+        function checkGuess() {
+
+            // نجيب الرقم اللي اللاعب كتبه
+            let userGuess = Number(document.getElementById("guess").value);
+
+            // مكان ظهور النتيجة
+            let result = document.getElementById("result");
+
+            if (userGuess === computerNumber) {
+
+                result.innerHTML = "🎉 Correct! You won!";
+
+            } else if (userGuess > computerNumber) {
+
+                result.innerHTML = "📉 Too high! Try again.";
+
+            } else {
+
+                result.innerHTML = "📈 Too low! Try again.";
+
+            }
+        }
+
+    </script>
+
+</body>
+</html>

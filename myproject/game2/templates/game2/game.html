@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rock Paper Scissors</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 80px;
+            background-color: #f2f2f2;
+        }
+
+        .game-box {
+            background-color: white;
+            width: 450px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        button {
+            padding: 15px 25px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 1px solid gray;
+            background-color: white;
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+
+        #result {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+        #choices {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game-box">
+
+        <h1>✊ Rock Paper Scissors ✂️</h1>
+
+        <p>Choose your move:</p>
+
+        <button onclick="playGame('rock')">
+            ✊ Rock
+        </button>
+
+        <button onclick="playGame('paper')">
+            📄 Paper
+        </button>
+
+        <button onclick="playGame('scissors')">
+            ✂️ Scissors
+        </button>
+
+        <div id="choices"></div>
+
+        <div id="result"></div>
+
+    </div>
+
+
+    <script>
+
+        function playGame(playerChoice) {
+
+            // الاختيارات المتاحة للكمبيوتر
+            let choices = ["rock", "paper", "scissors"];
+
+            // الكمبيوتر يختار اختيار عشوائي
+            let computerChoice =
+                choices[Math.floor(Math.random() * choices.length)];
+
+            let result = "";
+
+            // تحديد الفائز
+            if (playerChoice === computerChoice) {
+
+                result = "🤝 It's a Draw!";
+
+            }
+            else if (
+                (playerChoice === "rock" && computerChoice === "scissors") ||
+                (playerChoice === "paper" && computerChoice === "rock") ||
+                (playerChoice === "scissors" && computerChoice === "paper")
+            ) {
+
+                result = "🎉 You Win!";
+
+            }
+            else {
+
+                result = "😢 Computer Wins!";
+
+            }
+
+            // عرض الاختيارات
+            document.getElementById("choices").innerHTML =
+                "Your choice: " + playerChoice +
+                "<br>" +
+                "Computer's choice: " + computerChoice;
+
+            // عرض النتيجة
+            document.getElementById("result").innerHTML = result;
+        }
+
+    </script>
+
+</body>
+
+</html>

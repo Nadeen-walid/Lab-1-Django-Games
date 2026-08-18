@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Tic-Tac-Toe</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            text-align: center;
+            background-color: #f2f2f2;
+            margin-top: 50px;
+        }
+
+        .game-box {
+            background-color: white;
+            width: 380px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 35px;
+            cursor: pointer;
+            border: 2px solid black;
+            background-color: white;
+        }
+
+        .cell:hover {
+            background-color: #eeeeee;
+        }
+
+        #message {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #restart {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="game-box">
+
+        <h1>❌ Tic-Tac-Toe ⭕</h1>
+
+        <p>You are ❌</p>
+
+        <div class="board">
+
+            <button class="cell" onclick="playerMove(0)"></button>
+            <button class="cell" onclick="playerMove(1)"></button>
+            <button class="cell" onclick="playerMove(2)"></button>
+
+            <button class="cell" onclick="playerMove(3)"></button>
+            <button class="cell" onclick="playerMove(4)"></button>
+            <button class="cell" onclick="playerMove(5)"></button>
+
+            <button class="cell" onclick="playerMove(6)"></button>
+            <button class="cell" onclick="playerMove(7)"></button>
+            <button class="cell" onclick="playerMove(8)"></button>
+
+        </div>
+
+        <div id="message">
+            Your turn!
+        </div>
+
+        <button id="restart" onclick="restartGame()">
+            🔄 Restart Game
+        </button>
+
+    </div>
+
+
+    <script>
+
+        // شكل اللعبة في البداية
+        let board = [
+            "", "", "",
+            "", "", "",
+            "", "", ""
+        ];
+
+        // هل اللعبة انتهت؟
+        let gameOver = false;
+
+
+        // اللاعب يضغط على خانة
+        function playerMove(position) {
+
+            // لو اللعبة انتهت مفيش حركة
+            if (gameOver) {
+                return;
+            }
+
+            // لو الخانة متاخدة بالفعل
+            if (board[position] !== "") {
+                return;
+            }
+
+            // اللاعب = X
+            board[position] = "❌";
+
+            // تحديث شكل الخانات
+            updateBoard();
+
+            // نشوف هل اللاعب كسب
+            if (checkWinner("❌")) {
+                document.getElementById("message").innerHTML =
+                    "🎉 You Win!";
+                gameOver = true;
+                return;
+            }
+
+            // نشوف هل فيه تعادل
+            if (checkDraw()) {
+                document.getElementById("message").innerHTML =
+                    "🤝 Draw!";
+                gameOver = true;
+                return;
+            }
+
+            // دور الكمبيوتر
+            document.getElementById("message").innerHTML =
+                "🤖 Computer's turn...";
+
+            setTimeout(computerMove, 500);
+        }
+
+
+        // حركة الكمبيوتر
+        function computerMove() {
+
+            if (gameOver) {
+                return;
+            }
+
+            // نجيب الخانات الفاضية
+            let emptyCells = [];
+
+            for (let i = 0; i < board.length; i++) {
+
+                if (board[i] === "") {
+                    emptyCells.push(i);
+                }
+
+            }
+
+            // الكمبيوتر يختار خانة عشوائية
+            let randomIndex =
+                Math.floor(Math.random() * emptyCells.length);
+
+            let computerPosition =
+                emptyCells[randomIndex];
+
+            // الكمبيوتر = O
+            board[computerPosition] = "⭕";
+
+            // تحديث اللوحة
+            updateBoard();
+
+            // نشوف هل الكمبيوتر كسب
+            if (checkWinner("⭕")) {
+
+                document.getElementById("message").innerHTML =
+                    "😢 Computer Wins!";
+
+                gameOver = true;
+                return;
+            }
+
+            // نشوف هل فيه تعادل
+            if (checkDraw()) {
+
+                document.getElementById("message").innerHTML =
+                    "🤝 Draw!";
+
+                gameOver = true;
+                return;
+            }
+
+            // رجوع الدور للاعب
+            document.getElementById("message").innerHTML =
+                "Your turn!";
+        }
+
+
+        // تحديث الخانات على الشاشة
+        function updateBoard() {
+
+            let cells = document.querySelectorAll(".cell");
+
+            for (let i = 0; i < board.length; i++) {
+
+                cells[i].innerHTML = board[i];
+
+            }
+        }
+
+
+        // التأكد من وجود فائز
+        function checkWinner(player) {
+
+            let winningPatterns = [
+
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+
+                [0, 4, 8],
+                [2, 4, 6]
+
+            ];
+
+
+            for (let pattern of winningPatterns) {
+
+                if (
+                    board[pattern[0]] === player &&
+                    board[pattern[1]] === player &&
+                    board[pattern[2]] === player
+                ) {
+
+                    return true;
+
+                }
+
+            }
+
+            return false;
+        }
+
+
+        // التأكد إن مفيش خانات فاضية
+        function checkDraw() {
+
+            return !board.includes("");
+
+        }
+
+
+        // إعادة اللعبة من البداية
+        function restartGame() {
+
+            board = [
+                "", "", "",
+                "", "", "",
+                "", "", ""
+            ];
+
+            gameOver = false;
+
+            updateBoard();
+
+            document.getElementById("message").innerHTML =
+                "Your turn!";
+        }
+
+    </script>
+
+</body>
+
+</html>
